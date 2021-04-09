@@ -22,7 +22,7 @@ def send_start(message):
         else:
             bot.send_message(message.chat.id, text=msg, reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[0]))
 
-        # time.sleep(random.randint(1, 2))
+        time.sleep(random.randint(1, 2))
 
 
 # bot.send_message(message.chat.id, zarya01.MESSAGES[1], reply_markup=manager.makeMarkup(zarya01.BUTTONS[0]))
@@ -31,7 +31,7 @@ def send_start(message):
 def catch_voice(message):
     bot.send_message(message.chat.id, text=zarya01.MESSAGES[4][0])
     bot.send_message(message.chat.id, text=zarya01.MESSAGES[4][1],
-                     reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[4]))
+                     reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[5]))
 
 @bot.message_handler(content_types=['text'])
 def response(message):
@@ -43,7 +43,11 @@ def response(message):
             i = zarya01.BUTTONS.index(btn)
             break
     #TODO: добавить проверку на номер сообщения перед голосовухой
-    if i != -1 and s != zarya01.BUTTONS[-1]:
+    if i == 4: # для ГС
+        pass
+    elif i == 6: # даю счет
+        bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Дава, Юра!', reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[7]))
+    elif i != -1 and s != zarya01.BUTTONS[-1]:
         for msg in zarya01.MESSAGES[i]:
             if 'audio' in msg:
                 # TODO: заменить на with open
@@ -58,7 +62,7 @@ def response(message):
                 else:
                     bot.send_message(message.chat.id, text=msg,
                                  reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[i + 1]))
-            time.sleep(random.randint(1, 3))
+            time.sleep(random.randint(1, 2)/2)
 
         else:
             # TODO: обработать если сообщения кончились
