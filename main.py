@@ -8,8 +8,8 @@ import messages
 import manager
 from script import zarya01
 
-# bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
-bot = telebot.AsyncTeleBot(config.TOKEN, parse_mode='HTML')
+bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
+# bot = telebot.AsyncTeleBot(config.TOKEN, parse_mode='HTML')
 logger = telebot.logger
 telebot.logger.setLevel(logging.DEBUG) # Outputs debug messages to console.
 
@@ -21,14 +21,20 @@ def send_start(message):
             bot.send_message(message.chat.id, text=msg)
         else:
             bot.send_message(message.chat.id, text=msg, reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[0]))
-        time.sleep(random.randint(1, 3))
-    logger.log()
+
+        # time.sleep(random.randint(1, 2))
+
 
 # bot.send_message(message.chat.id, zarya01.MESSAGES[1], reply_markup=manager.makeMarkup(zarya01.BUTTONS[0]))
 
+@bot.message_handler(content_types=['voice'])
+def catch_voice(message):
+    bot.send_message(message.chat.id, text=zarya01.MESSAGES[4][0])
+    bot.send_message(message.chat.id, text=zarya01.MESSAGES[4][1],
+                     reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[4]))
 
 @bot.message_handler(content_types=['text'])
-def function_name(message):
+def response(message):
     print(message)
     s = message.text
     i = -1
@@ -36,13 +42,16 @@ def function_name(message):
         if s in btn:
             i = zarya01.BUTTONS.index(btn)
             break
+    #TODO: добавить проверку на номер сообщения перед голосовухой
     if i != -1 and s != zarya01.BUTTONS[-1]:
         for msg in zarya01.MESSAGES[i]:
             if 'audio' in msg:
+                # TODO: заменить на with open
                 audio = open(msg.split()[1], 'rb')
                 bot.send_voice(message.chat.id, audio)
             elif 'video' in msg:
-                pass
+                video = open(msg.split()[1], 'rb')
+                bot.send_video_note(message.chat.id, video)
             else:
                 if msg != zarya01.MESSAGES[i][-1]:
                     bot.send_message(message.chat.id, text=msg)
@@ -55,6 +64,9 @@ def function_name(message):
             # TODO: обработать если сообщения кончились
             pass
 
+
+
+    # 4
 
 # @bot.message_handler(regexp="SOME_REGEXP")
 # def handle_message(message):
