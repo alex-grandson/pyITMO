@@ -14,7 +14,10 @@ bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
 @bot.message_handler(commands=['start'])
 def send_start(message):
     for msg in zarya01.START:
-        bot.send_message(message.chat.id, text=msg, reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[0]))
+        if msg != zarya01.START[-1]:
+            bot.send_message(message.chat.id, text=msg)
+        else:
+            bot.send_message(message.chat.id, text=msg, reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[0]))
         time.sleep(random.randint(1, 3))
 
 
@@ -38,7 +41,10 @@ def function_name(message):
             elif 'video' in msg:
                 pass
             else:
-                bot.send_message(message.chat.id, text=msg,
+                if msg != zarya01.MESSAGES[i][-1]:
+                    bot.send_message(message.chat.id, text=msg)
+                else:
+                    bot.send_message(message.chat.id, text=msg,
                                  reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[i + 1]))
             time.sleep(random.randint(1, 3))
 
