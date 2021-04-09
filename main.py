@@ -47,6 +47,8 @@ def response(message):
         pass
     elif i == 6: # даю счет
         bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Дава, Юра!', reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[7]))
+    elif i == len(zarya01.BUTTONS) - 1:
+        bot.send_message(message.chat.id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
     elif i != -1 and s != zarya01.BUTTONS[-1]:
         for msg in zarya01.MESSAGES[i]:
             if 'audio' in msg:
@@ -67,13 +69,5 @@ def response(message):
         else:
             # TODO: обработать если сообщения кончились
             pass
-
-
-
-    # 4
-
-# @bot.message_handler(regexp="SOME_REGEXP")
-# def handle_message(message):
-# 	pass
 
 bot.polling(none_stop=True)
