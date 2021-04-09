@@ -1,14 +1,17 @@
 import time
 import random
-from this import s
 
+import logging
 import telebot
 import config
 import messages
 import manager
 from script import zarya01
 
-bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
+# bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
+bot = telebot.AsyncTeleBot(config.TOKEN, parse_mode='HTML')
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG) # Outputs debug messages to console.
 
 
 @bot.message_handler(commands=['start'])
@@ -19,7 +22,7 @@ def send_start(message):
         else:
             bot.send_message(message.chat.id, text=msg, reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[0]))
         time.sleep(random.randint(1, 3))
-
+    logger.log()
 
 # bot.send_message(message.chat.id, zarya01.MESSAGES[1], reply_markup=manager.makeMarkup(zarya01.BUTTONS[0]))
 
