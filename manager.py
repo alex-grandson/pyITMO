@@ -2,7 +2,7 @@ import telebot
 from telebot import types
 
 
-def makeMarkup(buttons: list):
+def makeMarkupFromList(buttons: list):
     markup = types.ReplyKeyboardMarkup(row_width=1)
     for btn in buttons:
         markup.add(types.KeyboardButton(btn))
