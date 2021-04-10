@@ -29,9 +29,9 @@ def send_start(message):
 
 @bot.message_handler(content_types=['voice'])
 def catch_voice(message):
-    bot.send_message(message.chat.id, text=MESSAGES[4][0])
-    bot.send_message(message.chat.id, text=MESSAGES[4][1],
-                     reply_markup=manager.makeMarkupFromList(BUTTONS[5]))
+    bot.send_message(message.chat.id, text=MESSAGES[VOICE_MESSAGE][0])
+    bot.send_message(message.chat.id, text=MESSAGES[VOICE_MESSAGE][1],
+                     reply_markup=manager.makeMarkupFromList(BUTTONS[VOICE_MESSAGE + 1]))
 
 @bot.message_handler(content_types=['text'])
 def response(message):
@@ -43,13 +43,13 @@ def response(message):
             i = BUTTONS.index(btn)
             break
 
-    if i == 4: # для ГС
+    if i == VOICE_MESSAGE:
         pass
     elif i == 6: # даю счет
         bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Давай, Юра!', reply_markup=manager.makeMarkupFromList(BUTTONS[7]))
-    elif i == len(BUTTONS) - 1:
+    elif i == LAST:
         bot.send_message(message.chat.id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
-    elif i != -1 and s != BUTTONS[-1]:
+    elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
             if 'audio' in msg:
                 with open(msg.split()[1], 'rb') as audio:

@@ -130,4 +130,7 @@ BUTTONS = [
 
 ]
 
+VOICE_MESSAGE = 4
+
+LAST = len(BUTTONS) - 1
 # DICT = dict(zip(USER_ANSWERS, BOT_ANSWERS))
