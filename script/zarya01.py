@@ -131,6 +131,6 @@ BUTTONS = [
 ]
 
 VOICE_MESSAGE = 4
-
+GO_AHEAD = 6 # Даю счет
 LAST = len(BUTTONS) - 1
 # DICT = dict(zip(USER_ANSWERS, BOT_ANSWERS))

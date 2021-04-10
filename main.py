@@ -45,8 +45,8 @@ def response(message):
 
     if i == VOICE_MESSAGE:
         pass
-    elif i == 6: # даю счет
-        bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Давай, Юра!', reply_markup=manager.makeMarkupFromList(BUTTONS[7]))
+    elif i == GO_AHEAD: # Даю счет
+        bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Давай, Юра!', reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
     elif i == LAST:
         bot.send_message(message.chat.id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
     elif i != -1 and s != BUTTONS[LAST]:
