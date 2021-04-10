@@ -46,7 +46,7 @@ def response(message):
     if i == 4: # для ГС
         pass
     elif i == 6: # даю счет
-        bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Дава, Юра!', reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[7]))
+        bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Давай, Юра!', reply_markup=manager.makeMarkupFromList(zarya01.BUTTONS[7]))
     elif i == len(zarya01.BUTTONS) - 1:
         bot.send_message(message.chat.id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
     elif i != -1 and s != zarya01.BUTTONS[-1]:
