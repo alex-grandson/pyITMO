@@ -10,8 +10,8 @@ from script.zarya01 import *
 
 bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
 # bot = telebot.AsyncTeleBot(config.TOKEN, parse_mode='HTML')
-logger = telebot.logger
-telebot.logger.setLevel(logging.DEBUG) # Outputs debug messages to console.
+# logger = telebot.logger
+# telebot.logger.setLevel(logging.DEBUG) # Outputs debug messages to console.
 
 
 @bot.message_handler(commands=['start'])
@@ -51,12 +51,15 @@ def response(message):
         bot.send_message(message.chat.id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
-            if 'audio' in msg:
-                with open(msg.split()[1], 'rb') as audio:
+            if msg.startswith('audio'):
+                with open(msg[6:], 'rb') as audio:
                     bot.send_voice(message.chat.id, audio)
-            elif 'video' in msg:
-                with open(msg.split()[1], 'rb') as video:
+            elif msg.startswith('video'):
+                with open(msg[6:], 'rb') as video:
                     bot.send_video_note(message.chat.id, video)
+            elif msg.startswith('photo'):
+                with open(msg[6:], 'rb') as photoBubble:
+                    pass
             else:
                 if msg != MESSAGES[i][-1]:
                     bot.send_message(message.chat.id, text=msg)
