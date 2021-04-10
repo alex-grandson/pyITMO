@@ -4,7 +4,6 @@ import random
 import logging
 import telebot
 import config
-import messages
 import manager
 from script.zarya01 import *
 
@@ -21,17 +20,15 @@ def send_start(message):
             bot.send_message(message.chat.id, text=msg)
         else:
             bot.send_message(message.chat.id, text=msg, reply_markup=manager.makeMarkupFromList(BUTTONS[0]))
-
         time.sleep(random.randint(1, 2))
 
-
-# bot.send_message(message.chat.id, MESSAGES[1], reply_markup=manager.makeMarkup(BUTTONS[0]))
 
 @bot.message_handler(content_types=['voice'])
 def catch_voice(message):
     bot.send_message(message.chat.id, text=MESSAGES[VOICE_MESSAGE][0])
     bot.send_message(message.chat.id, text=MESSAGES[VOICE_MESSAGE][1],
                      reply_markup=manager.makeMarkupFromList(BUTTONS[VOICE_MESSAGE + 1]))
+
 
 @bot.message_handler(content_types=['text'])
 def response(message):
@@ -46,7 +43,8 @@ def response(message):
     if i == VOICE_MESSAGE:
         pass
     elif i == GO_AHEAD: # Даю счет
-        bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Давай, Юра!', reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
+        bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Давай, Юра!',
+                         reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
     elif i == LAST:
         bot.send_message(message.chat.id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
     elif i != -1 and s != BUTTONS[LAST]:
