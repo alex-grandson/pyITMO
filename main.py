@@ -50,15 +50,13 @@ def response(message):
         bot.send_message(message.chat.id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
-            markup = None
             isLast = msg == MESSAGES[i][-1]
-            if isLast:
-                markup = manager.makeMarkupFromList(BUTTONS[i + 1])
+            markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast else None
             if msg[:5] in ['audio', 'voice']:
-                with open(msg[6:], 'rb') as audio:
+                with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as audio:
                     bot.send_voice(message.chat.id, audio, reply_markup=markup)
             elif msg[:5] in ['video', 'photo']:
-                with open(msg[6:], 'rb') as bubble:
+                with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as bubble:
                     bot.send_video_note(message.chat.id, bubble, reply_markup=markup)
             else:
                 bot.send_message(message.chat.id, text=msg, reply_markup=markup)
