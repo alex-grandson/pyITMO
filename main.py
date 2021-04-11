@@ -51,6 +51,7 @@ def response(message):
         bot.send_message(message.chat.id, text=MESSAGES[GO_AHEAD],
                          reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
     elif i == FORWARD_MESSAGES_I:
+        makeDelay()
         bot.send_message(chat_id, MESSAGES[FORWARD_MESSAGES_I][0])
         makeDelay()
         for person in FORWARD_MESSAGES:
