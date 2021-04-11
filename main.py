@@ -16,6 +16,7 @@ bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
 def makeDelay():
     time.sleep(random.randint(1, 2) / 2)
 
+
 @bot.message_handler(commands=['start'])
 def send_start(message):
     for msg in START:
@@ -46,19 +47,20 @@ def response(message):
 
     if i == VOICE_MESSAGE:
         pass
-    if i == FORWARD_MESSAGES_I:
+    elif i == GO_AHEAD:  # Даю счет
+        bot.send_message(message.chat.id, text=MESSAGES[GO_AHEAD],
+                         reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
+    elif i == FORWARD_MESSAGES_I:
         bot.send_message(chat_id, MESSAGES[FORWARD_MESSAGES_I][0])
+        makeDelay()
         for person in FORWARD_MESSAGES:
             bot.forward_message(chat_id, from_chat_id=person[0], message_id=person[1])
             makeDelay()
         bot.send_message(chat_id, MESSAGES[FORWARD_MESSAGES_I][1],
                          reply_markup=manager.makeMarkupFromList(BUTTONS[FORWARD_MESSAGES_I + 1]))
 
-    elif i == GO_AHEAD: # Даю счет
-        bot.send_message(message.chat.id, text=MESSAGES[GO_AHEAD],
-                         reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
-
     elif i == LAST:
+        bot.send_sticker(chat_id, 'CAACAgIAAxkBAAECKoFgcyxcQ7SYZ3ls26If1z1TXpP_mwACkgEAAjDUnRFYJkehjKR6YB4E')
         bot.send_message(chat_id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
