@@ -73,6 +73,9 @@ def response(message):
             elif msg[:5] in ['video', 'photo']:
                 with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as bubble:
                     bot.send_video_note(chat_id, bubble, reply_markup=markup)
+            elif msg[:5] == 'music':
+                with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as music:
+                    bot.send_audio(chat_id, music, reply_markup=markup)
             else:
                 bot.send_message(chat_id, text=msg, reply_markup=markup)
             makeDelay()
