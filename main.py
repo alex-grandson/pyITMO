@@ -69,16 +69,16 @@ def response(message):
             reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast else None
             if msg[:5] in ['audio', 'voice']:
                 with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as audio:
-                    bot.send_voice(chat_id, audio, reply_markup)
+                    bot.send_voice(chat_id, audio, reply_markup=reply_markup)
             elif msg[:5] == 'video':
                 with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as bubble:
-                    bot.send_video_note(chat_id, bubble, reply_markup)
+                    bot.send_video_note(chat_id, bubble, reply_markup=reply_markup)
             elif msg[:5] == 'photo':
                 with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as photo:
-                    bot.send_photo(chat_id, photo, reply_markup)
+                    bot.send_photo(chat_id, photo, reply_markup=reply_markup)
             elif msg[:5] == 'music':
                 with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as music:
-                    bot.send_audio(chat_id, music, reply_markup)
+                    bot.send_audio(chat_id, music, reply_markup=reply_markup)
             else:
                 bot.send_message(chat_id, text=msg, reply_markup=reply_markup)
             makeDelay()
