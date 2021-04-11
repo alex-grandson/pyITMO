@@ -54,9 +54,9 @@ def response(message):
         bot.send_message(chat_id, MESSAGES[FORWARD_MESSAGES_I][1],
                          reply_markup=manager.makeMarkupFromList(BUTTONS[FORWARD_MESSAGES_I + 1]))
 
-    # elif i == GO_AHEAD: # Даю счет
-    #     bot.send_message(message.chat.id, text='<b>Заря 1(Каманин):</b> Давай, Юра!',
-    #                      reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
+    elif i == GO_AHEAD: # Даю счет
+        bot.send_message(message.chat.id, text=MESSAGES[GO_AHEAD],
+                         reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
 
     elif i == LAST:
         bot.send_message(chat_id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
