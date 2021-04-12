@@ -33,6 +33,20 @@ def catch_voice(message):
                      reply_markup=manager.makeMarkupFromList(BUTTONS[VOICE_MESSAGE + 1]))
 
 
+@bot.message_handler(regexp='Вскрыть пакет')
+def open_package(message):
+    bot.send_message(message.chat.id, OPEN_PACKAGE_PROBLEM)
+
+
+@bot.message_handler(regexp='125')
+def open_package(message):
+    makeDelay()
+    bot.send_message(message.chat.id, OPEN_PACKAGE_MESSAGE, reply_markup=manager.makeMarkupFromList(BUTTONS[OPEN_PACKAGE + 1]))
+    makeDelay()
+    for msg in MESSAGES[OPEN_PACKAGE]:
+        bot.send_message(message.chat.id, msg)
+        makeDelay()
+
 @bot.message_handler(content_types=['text'])
 def response(message):
     print(message)
@@ -64,6 +78,7 @@ def response(message):
         bot.send_sticker(chat_id, STICKER_OUT)
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
+            print(f'i={i}')
             isLast = msg == MESSAGES[i][-1]
             reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast else None
             type = msg[:5]
