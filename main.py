@@ -9,8 +9,8 @@ from script.zarya01 import *
 
 bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
 # bot = telebot.AsyncTeleBot(config.TOKEN, parse_mode='HTML')
-# logger = telebot.logger
-# telebot.logger.setLevel(logging.DEBUG) # Outputs debug messages to console.
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG) # Outputs debug messages to console.
 
 
 def makeDelay():
