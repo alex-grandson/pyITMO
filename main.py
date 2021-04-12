@@ -59,26 +59,29 @@ def response(message):
             makeDelay()
         bot.send_message(chat_id, MESSAGES[FORWARD_MESSAGES_I][1],
                          reply_markup=manager.makeMarkupFromList(BUTTONS[FORWARD_MESSAGES_I + 1]))
-
     elif i == LAST:
-        bot.send_sticker(chat_id, 'CAACAgIAAxkBAAECKoFgcyxcQ7SYZ3ls26If1z1TXpP_mwACkgEAAjDUnRFYJkehjKR6YB4E')
-        bot.send_message(chat_id, "Конец прикола! Можешь попробовать еще раз, нажав /start")
+        bot.send_message(chat_id, GOODBYE)
+        bot.send_sticker(chat_id, STICKER_OUT)
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
             isLast = msg == MESSAGES[i][-1]
             reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast else None
-            if msg[:5] in ['audio', 'voice']:
-                with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as audio:
+            type = msg[:5]
+            if type in ['audio', 'voice']:
+                with open(f'./files/{type}/{msg[6:]}', 'rb') as audio:
                     bot.send_voice(chat_id, audio, reply_markup=reply_markup)
-            elif msg[:5] == 'video':
-                with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as bubble:
+            elif type == 'video':
+                with open(f'./files/{type}/{msg[6:]}', 'rb') as bubble:
                     bot.send_video_note(chat_id, bubble, reply_markup=reply_markup)
-            elif msg[:5] == 'photo':
-                with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as photo:
+            elif type == 'photo':
+                with open(f'./files/{type}/{msg[6:]}', 'rb') as photo:
                     bot.send_photo(chat_id, photo, reply_markup=reply_markup)
-            elif msg[:5] == 'music':
-                with open(f'./files/{msg[:5]}/{msg[6:]}', 'rb') as music:
+            elif type == 'music':
+                with open(f'./files/{type}/{msg[6:]}', 'rb') as music:
                     bot.send_audio(chat_id, music, reply_markup=reply_markup)
+            elif type == 'coord':
+                lat, long = msg.split()[1], msg.split()[2]
+                bot.send_location(chat_id, lat, long, reply_markup=reply_markup)
             else:
                 bot.send_message(chat_id, text=msg, reply_markup=reply_markup)
             makeDelay()
