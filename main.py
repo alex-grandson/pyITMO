@@ -47,6 +47,7 @@ def open_package(message):
         bot.send_message(message.chat.id, msg)
         makeDelay()
 
+
 @bot.message_handler(content_types=['text'])
 def response(message):
     print(message)
