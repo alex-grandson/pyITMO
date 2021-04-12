@@ -53,7 +53,7 @@ def response(message):
     chat_id = message.chat.id
     s = message.text
     i = -1
-
+    print(message)
     for btn in BUTTONS:
         if s in btn:
             i = BUTTONS.index(btn)
