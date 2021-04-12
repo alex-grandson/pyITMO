@@ -50,7 +50,6 @@ def open_package(message):
 
 @bot.message_handler(content_types=['text'])
 def response(message):
-    print(message)
     chat_id = message.chat.id
     s = message.text
     i = -1
@@ -79,7 +78,6 @@ def response(message):
         bot.send_sticker(chat_id, STICKER_OUT)
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
-            print(f'i={i}')
             isLast = msg == MESSAGES[i][-1]
             reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast else None
             type = msg[:5]
