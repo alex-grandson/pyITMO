@@ -6,6 +6,7 @@ import telebot
 import config
 import manager
 from script.zarya01 import *
+from credits import *
 
 bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
 # bot = telebot.AsyncTeleBot(config.TOKEN, parse_mode='HTML')
@@ -27,6 +28,11 @@ def send_start(message):
         makeDelay()
 
 
+@bot.message_handler(commands=['credits'])
+def send_credits(message):
+    bot.send_message(message.chat.id, text=CREDITS)
+
+
 @bot.message_handler(content_types=['voice'])
 def catch_voice(message):
     bot.send_message(message.chat.id, text=MESSAGES[VOICE_MESSAGE][0],
@@ -38,7 +44,7 @@ def open_package(message):
     bot.send_message(message.chat.id, OPEN_PACKAGE_PROBLEM)
 
 
-@bot.message_handler(regexp='125')
+@bot.message_handler(regexp='225')
 def open_package(message):
     makeDelay()
     bot.send_message(message.chat.id, OPEN_PACKAGE_MESSAGE, reply_markup=manager.makeMarkupFromList(BUTTONS[OPEN_PACKAGE + 1]))
@@ -79,7 +85,7 @@ def response(message):
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
             isLast = msg == MESSAGES[i][-1]
-            reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast else None
+            reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast and i == VOICE_MESSAGE else None
             type = msg[:5]
             if type in ['audio', 'voice']:
                 with open(f'./files/{type}/{msg[6:]}', 'rb') as audio:
