@@ -103,6 +103,9 @@ def response(message):
             elif type == 'coord':
                 lat, long = msg.split()[1], msg.split()[2]
                 bot.send_location(chat_id, lat, long, reply_markup=reply_markup)
+            elif type == 'stick':
+                stick = msg.split()[1]
+                bot.send_sticker(chat_id, stick)
             else:
                 bot.send_message(chat_id, text=msg, reply_markup=reply_markup)
             makeDelay()
