@@ -85,7 +85,8 @@ def response(message):
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
             isLast = msg == MESSAGES[i][-1]
-            reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast and i == VOICE_MESSAGE else None
+            reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast else None
+            if i == VOICE_MESSAGE: reply_markup = None
             type = msg[:5]
             if type in ['audio', 'voice']:
                 with open(f'./files/{type}/{msg[6:]}', 'rb') as audio:
