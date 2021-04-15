@@ -21,10 +21,11 @@ def makeDelay():
 @bot.message_handler(commands=['start'])
 def send_start(message):
     for msg in START:
-        if msg != START[-1]:
-            bot.send_message(message.chat.id, text=msg)
-        else:
-            bot.send_message(message.chat.id, text=msg, reply_markup=manager.makeMarkupFromList(BUTTONS[0]))
+        reply_markup = manager.makeMarkupFromList(BUTTONS[0]) if msg == START[-1] else None
+        if msg[:5] == 'photo':
+            with open(f'./files/{type}/{msg[6:]}', 'rb') as photo:
+                bot.send_photo(message.chat.id, photo, reply_markup=reply_markup)
+        bot.send_message(message.chat.id, text=msg, reply_markup=reply_markup)
         makeDelay()
 
 
