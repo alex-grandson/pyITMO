@@ -16,3 +16,7 @@ def makeMarkup(btn: str):
     markup.add(types.KeyboardButton(btn))
     markup.one_time_keyboard=True
     return markup
+
+
+def checkLanguage(message):
+    return message.user.language_code

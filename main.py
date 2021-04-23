@@ -5,7 +5,8 @@ import logging
 import telebot
 import config
 import manager
-from script.zarya01 import *
+import zarya_eng
+import zarya_rus
 from credits import *
 
 bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
@@ -20,6 +21,11 @@ def makeDelay():
 
 @bot.message_handler(commands=['start'])
 def send_start(message):
+    if manager.checkLanguage(message) == 'ru':
+        START = zarya_rus.START
+    else:
+        START = zarya_eng.START
+
     for msg in START:
         reply_markup = manager.makeMarkupFromList(BUTTONS[0]) if msg == START[-1] else None
         if msg[:5] == 'photo':
