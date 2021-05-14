@@ -5,7 +5,7 @@ import logging
 import telebot
 import config
 import manager
-from script.zarya01 import *
+from script.plot import *
 from credits import *
 
 bot = telebot.TeleBot(config.TOKEN, parse_mode='HTML')
@@ -41,21 +41,6 @@ def catch_voice(message):
                      reply_markup=manager.makeMarkupFromList(BUTTONS[VOICE_MESSAGE + 1]))
 
 
-@bot.message_handler(regexp='Вскрыть пакет')
-def open_package(message):
-    bot.send_message(message.chat.id, OPEN_PACKAGE_PROBLEM)
-
-
-@bot.message_handler(regexp='225')
-def open_package(message):
-    makeDelay()
-    bot.send_message(message.chat.id, OPEN_PACKAGE_MESSAGE, reply_markup=manager.makeMarkupFromList(BUTTONS[OPEN_PACKAGE + 1]))
-    makeDelay()
-    for msg in MESSAGES[OPEN_PACKAGE]:
-        bot.send_message(message.chat.id, msg)
-        makeDelay()
-
-
 @bot.message_handler(content_types=['text'])
 def response(message):
     chat_id = message.chat.id
@@ -67,28 +52,13 @@ def response(message):
             i = BUTTONS.index(btn)
             break
 
-    if i == VOICE_MESSAGE:
-        pass
-    elif i == GO_AHEAD:  # Даю счет
-        bot.send_message(message.chat.id, text=MESSAGES[GO_AHEAD],
-                         reply_markup=manager.makeMarkupFromList(BUTTONS[GO_AHEAD + 1]))
-    elif i == FORWARD_MESSAGES_I:
-        makeDelay()
-        bot.send_message(chat_id, MESSAGES[FORWARD_MESSAGES_I][0])
-        makeDelay()
-        for person in FORWARD_MESSAGES:
-            bot.forward_message(chat_id, from_chat_id=person[0], message_id=person[1])
-            makeDelay()
-        bot.send_message(chat_id, MESSAGES[FORWARD_MESSAGES_I][1],
-                         reply_markup=manager.makeMarkupFromList(BUTTONS[FORWARD_MESSAGES_I + 1]))
-    elif i == LAST:
+    if i == LAST:
         bot.send_message(chat_id, GOODBYE)
         bot.send_sticker(chat_id, STICKER_OUT)
     elif i != -1 and s != BUTTONS[LAST]:
         for msg in MESSAGES[i]:
             isLast = msg == MESSAGES[i][-1]
             reply_markup = manager.makeMarkupFromList(BUTTONS[i + 1]) if isLast else None
-            if i == VOICE_MESSAGE: reply_markup = None
             type = msg[:5]
             if type in ['audio', 'voice']:
                 with open(f'./files/{type}/{msg[6:]}', 'rb') as audio:
