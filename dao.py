@@ -1,8 +1,8 @@
 import os
 from typing import Dict, List, Tuple
-
 import sqlite3
 
+# conn = sqlite3.connect("messages.db", check_same_thread=False)
 conn = sqlite3.connect("messages.db")
 cursor = conn.cursor()
 
@@ -29,6 +29,10 @@ def update(table: str, primary_key, value, data: Dict):
         statements.append(key + ' = ' + str(data[key]))
     query = ', '.join(statements)
     try:
+        sql_q = f"UPDATE {table} " \
+                       f"SET {query} " \
+                       f"WHERE {primary_key}={value}"
+        print(sql_q)
         cursor.execute(f"UPDATE {table} "
                        f"SET {query} "
                        f"WHERE {primary_key}={value}")
@@ -49,16 +53,6 @@ def fetchall(table: str, columns: List[str]) -> List[Tuple]:
             dict_row[column] = row[index]
         result.append(dict_row)
     return result
-
-MESSAGES = {
-    'rus': fetchall('messages', ['message_id', 'rus']),
-    'eng': fetchall('messages', ['message_id', 'eng'])
-}
-for msg in MESSAGES['rus']:
-    print(msg)
-
-for msg in MESSAGES['eng']:
-    print(msg)
 
 
 def delete(table: str, row_id: int) -> None:
@@ -93,13 +87,19 @@ def add_user(id: int, lang: str):
 
 
 def user_exists(id: int) -> bool:
-    cursor.execute(f'SELECT * FROM users WHERE id is {id}')
+    cursor.execute(f'SELECT * FROM users WHERE id IS {id}')
     rows = cursor.fetchall()
     return rows != []
 
 
+def set_lang(id: int, lang: str):
+    update('users', 'id', id, {
+        'lang': '"' + lang + '"'
+    })
+
+
 def get_lang(id: int) -> str:
-    cursor.execute(f'SELECT lang FROM users WHERE id is {id}')
+    cursor.execute(f'SELECT lang FROM users WHERE id IS {id}')
     val = cursor.fetchone()
     return val[0]
 
@@ -108,12 +108,22 @@ def is_russian(id: int) -> bool:
     return get_lang(id) == 'rus'
 
 
+def get_plot_point(id: int) -> int:
+    cursor.execute(f'SELECT plot_point FROM users WHERE id IS {id}')
+    plot_point = int(cursor.fetchone()[0])
+    return plot_point
+
+
 def update_plot_point(id: int, plot_point: int):
     update('users', 'id', id, {
-        'plot_point': plot_point,
-        'messages_sent': 0,
+        'plot_point': plot_point
     })
 
+
+def get_and_increase_plot_point(id: int) -> int:
+    plot_point = get_plot_point(id)
+    update_plot_point(id, plot_point + 1)
+    return plot_point
 
 # def _init_db():
 #     """Инициализирует БД"""
@@ -122,23 +132,12 @@ def update_plot_point(id: int, plot_point: int):
 #     cursor.executescript(sql)
 #     conn.commit()
 #
-
-def check_db_exists():
-    """Проверяет, инициализирована ли БД, если нет — инициализирует"""
-    cursor.execute("SELECT name FROM sqlite_master "
-                   "WHERE type='table' AND name='messages'")
-    table_exists = cursor.fetchall()
-    if table_exists:
-        return
-    # _init_db()
-
-
-# check_db_exists()
-# get_message('messages', 69, 'rus')
-# get_message('answers', 69, 'rus')
-# add_user(14481, 'rus')
-
-
-
-
-# print(user_exists(123))
+#
+# def check_db_exists():
+#     """Проверяет, инициализирована ли БД, если нет — инициализирует"""
+#     cursor.execute("SELECT name FROM sqlite_master "
+#                    "WHERE type='table' AND name='messages'")
+#     table_exists = cursor.fetchall()
+#     if table_exists:
+#         return
+#     _init_db()
