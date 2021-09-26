@@ -82,7 +82,7 @@ FORWARD_MESSAGES = {
     ],
     'eng': [
         ['@volinov_boris', 6],  # Волынов
-        ['@alexey_leonovv', 7],  # Леонов
+        ['@alexey_leonovv', 9],  # Леонов
         ['@valeriy_bikovskiy', 6],  # Быковский
         ['@victor_gorbatko', 6]  # Горбатко
     ]
