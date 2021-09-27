@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 main.py >file.txt 2>&1 &
+python3 server.py >file.txt 2>&1 &
