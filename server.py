@@ -1,19 +1,15 @@
 import logging
 import os
 
-import aiogram.types
-
-import dao
-import manager
-from bot_messages import *
-import aiohttp
+import aiogram
 from aiogram import Bot, Dispatcher, executor, types
+
+from bot_messages import *
+import manager
 
 logging.basicConfig(level=logging.INFO)
 
-# API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
-
-API_TOKEN = '1622184105:AAG-y-RDnbLI7Y84P-ABkOZtzwYSHOTNPUI'
+API_TOKEN = os.environ['TG_TOKEN']
 
 logging.basicConfig(level=logging.INFO)
 
