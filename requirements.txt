@@ -1,1 +1,1 @@
-pytelegrambotapi
+aiogram~=2.14.3
