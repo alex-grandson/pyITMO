@@ -6,6 +6,7 @@ from aiogram import Bot, Dispatcher, executor, types
 
 from bot_messages import *
 import manager
+import time
 
 logging.basicConfig(level=logging.INFO)
 
@@ -15,6 +16,11 @@ logging.basicConfig(level=logging.INFO)
 
 bot = Bot(token=API_TOKEN, parse_mode='HTML')
 dp = Dispatcher(bot)
+
+
+def make_delay() -> None:
+    time.sleep(0.3)
+
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
@@ -32,11 +38,14 @@ async def send_welcome(message: types.Message):
         markup = manager.makeMarkupFromList(BUTTONS[lang][0]) if m == START[lang][-1] else None
         if m[:5] == 'photo':
             with open(f'./files/{m[:5]}/{m[6:]}', 'rb') as photo:
+                make_delay()
                 await bot.send_photo(id, photo)
         else:
+            make_delay()
             await message.answer(m, reply_markup=markup)
     dao.update_plot_point(id, 1)
     print(f'{BUTTONS[lang]}')
+
 
 @dp.message_handler(commands=['lang'])
 async def send_lang_setup(message: types.Message):
@@ -45,12 +54,21 @@ async def send_lang_setup(message: types.Message):
     markup.add(aiogram.types.InlineKeyboardButton(text='English 🇬🇧', callback_data='eng'))
     await message.answer(text='Please choose language /\nПожалуйста выберете язык:', reply_markup=markup)
 
+
+@dp.message_handler(commands=['credits'])
+async def send_lang_setup(message: types.Message):
+    id = message['from']['id']
+    lang = dao.get_lang(id)
+    await bot.send_message(id, text=CREDITS[lang])
+
+
 @dp.callback_query_handler()
 async def change_language(message: types.Message):
     id = message['from']['id']
     lang = message.data
     dao.set_lang(id, lang)
     await message.answer(text=LANG_CHANGED[lang])
+
 
 @dp.message_handler(content_types=['voice'])
 async def react_on_voice(message: types.Message):
@@ -60,6 +78,7 @@ async def react_on_voice(message: types.Message):
     # dao.increase_plot_point(id)
     await message.answer(MESSAGES[lang][VOICE_MESSAGE][0],
                          reply_markup=manager.makeMarkupFromList(BUTTONS[lang][VOICE_MESSAGE]))
+
 
 @dp.message_handler()
 async def answer_to_user(message: types.Message):
@@ -92,6 +111,7 @@ async def answer_to_user(message: types.Message):
                 markup = manager.makeMarkupFromList(BUTTONS[lang][plot_point])
             type = m[:5]
             path = f'./files/{type}/{m[6:]}'
+            make_delay()
             if type in ['audio', 'voice']:
                 with open(path, 'rb') as audio:
                     await bot.send_voice(id, audio, reply_markup=markup)
